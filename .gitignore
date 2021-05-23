@@ -1,0 +1,4 @@
+config_dev.py
+venv/
+.vscode
+script.txt
