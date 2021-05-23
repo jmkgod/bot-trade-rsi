@@ -1,0 +1,52 @@
+// up trend
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © jankungz
+
+//@version=4
+strategy("test",currency=currency.USD,commission_type=strategy.commission.percent,commission_value=0.1)
+
+len = input(14, minval=1, title="Length")
+src = input(close, "Source", type = input.source)
+up = rma(max(change(src), 0), len)
+down = rma(-min(change(src), 0), len)
+rsi = down == 0 ? 100 : up == 0 ? 0 : 100 - (100 / (1 + up / down))
+plot(rsi, "RSI", color=#8E1599)
+band1 = hline(70, "Upper Band", color=#C0C0C0)
+band0 = hline(30, "Lower Band", color=#C0C0C0)
+fill(band1, band0, color=#9915FF, transp=90, title="Background")
+
+
+
+if rsi < 25
+    strategy.entry("buy", strategy.long, 10, when=strategy.position_size <= 0)
+    
+if rsi > 50
+    strategy.entry("sell", strategy.short, 10, when=strategy.position_size > 0)
+plot(strategy.equity)
+
+
+// downtrend
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © jankungz
+
+//@version=4
+strategy("test",currency=currency.USD,commission_type=strategy.commission.percent,commission_value=0.1)
+
+len = input(14, minval=1, title="Length")
+src = input(close, "Source", type = input.source)
+up = rma(max(change(src), 0), len)
+down = rma(-min(change(src), 0), len)
+rsi = down == 0 ? 100 : up == 0 ? 0 : 100 - (100 / (1 + up / down))
+plot(rsi, "RSI", color=#8E1599)
+band1 = hline(70, "Upper Band", color=#C0C0C0)
+band0 = hline(30, "Lower Band", color=#C0C0C0)
+fill(band1, band0, color=#9915FF, transp=90, title="Background")
+
+
+
+if rsi < 25
+    strategy.entry("buy", strategy.long, 10, when=strategy.position_size <= 0)
+    
+if rsi > 33
+    strategy.entry("sell", strategy.short, 10, when=strategy.position_size > 0)
+plot(strategy.equity)
