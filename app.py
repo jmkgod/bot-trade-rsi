@@ -1,6 +1,6 @@
 from flask import Flask , request
 import json
-
+ 
 from BinanceTrade.Trade import ReceiveSignals
 
 app = Flask(__name__)
