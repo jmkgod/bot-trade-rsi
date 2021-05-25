@@ -50,3 +50,10 @@ if rsi < 25
 if rsi > 33
     strategy.entry("sell", strategy.short, 10, when=strategy.position_size > 0)
 plot(strategy.equity)
+
+
+
+
+
+
+///////////////heroku logs --tail

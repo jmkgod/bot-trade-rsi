@@ -59,8 +59,8 @@ def ReceiveSignals(signal_data_dict):
     print('signal_data_dict',signal_data_dict)
     if signal_data_dict["SIGNALS"] == "buy":
         try:
-            BUY(symbol=signal_data_dict["SYMBOL"],position_size=8.5)
-            return "BUY {} SUCCESS! \nSIZE : {}".format(signal_data_dict["SYMBOL"],8.5)
+            BUY(symbol=signal_data_dict["SYMBOL"],position_size=signal_data_dict["POSITION_SIZE"])
+            return "BUY {} SUCCESS! \nSIZE : {}".format(signal_data_dict["SYMBOL"],signal_data_dict["POSITION_SIZE"])
         except Exception as e:
             return "เกิดข้อผิดพลาด {}".format(e.args)
 
