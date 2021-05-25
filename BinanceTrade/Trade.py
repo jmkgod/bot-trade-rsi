@@ -8,20 +8,25 @@ except Exception:
 client = Client( API_BINANCE_KEY , API_BINANCE_SECRET )
 
 def BUY(symbol,position_size):
+    print('inside buy')
     USDT_balance = client.get_asset_balance("USDT")
+    print('USDT_balance',USDT_balance)
     if float(USDT_balance['free']) >= 10 :
+        print('call api buy')
+        print(symbol,position_size)
         order = client.order_market_buy(
             symbol=symbol,
             quantity=position_size
         )
-
+        order = 'buy1'
         return order
 
     return "เกิดข้อผิดพลาด"
 
-def SELL(symbol,position_size=0):
+def SELL(symbol,position_size):
+    print('inside sell')
     POS_SIZE = str(position_size)
-    sym = symbol.split("USDT")[0] #BTCUSDT --> BTC
+    # sym = symbol.split("USDT")[0] #BTCUSDT --> BTC
     # if sell_all:
     #     POS_SIZE = client.get_asset_balance(sym)['free']
     # # sym = symbol.split("USDT")[0] #BTCUSDT --> BTC
@@ -32,16 +37,22 @@ def SELL(symbol,position_size=0):
 
 
         # position_size = Interger + "." + decimal[:dec_count]
+    print(position_size)
     if float(position_size) > 0 :
+        print('call api sell')
+        print(symbol,position_size)
         order = client.order_market_sell(
                 symbol=symbol,
                 quantity=position_size
             )
-        
+        order = 'sell1'
         return order
             
 
 def ReceiveSignals(signal_data_dict):
+    print(signal_data_dict)
+    print(signal_data_dict['SIGNALS'])
+    print(signal_data_dict['POSITION_SIZE'])
     if signal_data_dict["SIGNALS"] == "buy":
         try:
             BUY(symbol=signal_data_dict["SYMBOL"],position_size=signal_data_dict["POSITION_SIZE"])
@@ -51,7 +62,7 @@ def ReceiveSignals(signal_data_dict):
 
     elif signal_data_dict["SIGNALS"] == "sell":
         try:
-            SELL(symbol=signal_data_dict["SYMBOL"])
+            SELL(symbol=signal_data_dict["SYMBOL"],position_size=signal_data_dict["POSITION_SIZE"])
             return "SELL {} SUCCESS".format(signal_data_dict["SYMBOL"])
         except Exception as e:
             return "เกิดข้อผิดพลาด {}".format(e.args)
