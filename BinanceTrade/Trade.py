@@ -18,7 +18,6 @@ def BUY(symbol,position_size):
             symbol=symbol,
             quantity=position_size
         )
-        order = 'buy1'
         return order
 
     return "เกิดข้อผิดพลาด"
@@ -45,7 +44,6 @@ def SELL(symbol,position_size):
                 symbol=symbol,
                 quantity=position_size
             )
-        order = 'sell1'
         return order
             
 
