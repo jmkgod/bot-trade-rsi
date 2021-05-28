@@ -8,43 +8,47 @@ except Exception:
 client = Client( API_BINANCE_KEY , API_BINANCE_SECRET )
 
 def BUY(symbol,position_size):
-    print('inside buy')
     USDT_balance = client.get_asset_balance("USDT")
-    print('USDT_balance',USDT_balance)
-    if float(USDT_balance['free']) >= 10 :
-        print('call api buy')
-        print(symbol,position_size)
+    if float(USDT_balance['free']) > 10:
         order = client.order_market_buy(
             symbol=symbol,
             quantity=position_size
         )
+        print('buy done')
         return order
 
     return "เกิดข้อผิดพลาด"
 
-def SELL(symbol,position_size):
-    print('inside sell')
+def SELL(symbol,position_size=6.23423434,sell_all=True):
     POS_SIZE = str(position_size)
-    # sym = symbol.split("USDT")[0] #BTCUSDT --> BTC
-    # if sell_all:
-    #     POS_SIZE = client.get_asset_balance(sym)['free']
-    # # sym = symbol.split("USDT")[0] #BTCUSDT --> BTC
-    # # 0.00223445 --> [0 , 00223445]
-    # Interger = POS_SIZE.split(".")[0]
-    # decimal = POS_SIZE.split(".")[1]
-    # dec_count = -1
+    if sell_all:
+        sym = symbol.split("USDT")[0] #BTCUSDT --> BTC
+        POS_SIZE = client.get_asset_balance(sym)['free']
+   
+    # 0.00223445 --> [0 , 00223445]
+    Interger = POS_SIZE.split(".")[0]
+    decimal = POS_SIZE.split(".")[1]
+    dec_count = -1
+    print(decimal[:dec_count])
 
+    while True:
+        position_size = Interger + "." + decimal[:dec_count]
+        if float(position_size) > 0:
+            try:
+                order = client.order_market_sell(
+                    symbol=symbol,
+                    quantity=position_size
+                )
+                print('sell done')
+                return order
+            
+            except Exception as e:
+                if e.code == -1013:
+                    dec_count = dec_count - 1
 
-        # position_size = Interger + "." + decimal[:dec_count]
-    print(position_size)
-    if float(position_size) > 0 :
-        print('call api sell')
-        print(symbol,position_size)
-        order = client.order_market_sell(
-                symbol=symbol,
-                quantity=position_size
-            )
-        return order
+                else :
+                    print(e.args)
+                    return "เกิดข้อผิดพลาด"
             
 
 def ReceiveSignals(signal_data_dict):
